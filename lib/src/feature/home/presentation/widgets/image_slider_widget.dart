@@ -1,6 +1,7 @@
 // features/home/presentation/image_slider_widget.dart
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:villa_idealis/size_config.dart';
 import '../../../../core/constant/color_constant.dart';
 import '../../data/datasources/image_data.dart';
 
@@ -19,10 +20,12 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
   @override
   Widget build(BuildContext context) {
     const List<String> imgList = ImageData.imgList;
+    final marginHozCarousel = getProportionateScreenWidth(context, 10);
 
     final List<Widget> imageSliders = imgList
         .map((item) => Container(
-              margin: const EdgeInsets.all(5.0),
+              margin: EdgeInsets.only(
+                  bottom: 5, left: marginHozCarousel, right: marginHozCarousel),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Stack(
@@ -34,7 +37,7 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
                       right: 0.0,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
+                            vertical: 10.0, horizontal: 0.0),
                       ),
                     ),
                   ],
@@ -51,8 +54,9 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
           options: CarouselOptions(
             autoPlay: false,
             enlargeCenterPage: true,
-            enlargeFactor: 0.2,
-            aspectRatio: 2.0,
+            enlargeFactor: 0.1,
+            viewportFraction: 1,
+            aspectRatio: 2.2,
             onPageChanged: (index, reason) {
               setState(() {
                 _current = index;
