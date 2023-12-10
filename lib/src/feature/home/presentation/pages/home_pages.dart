@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constant/color_constant.dart';
 import '../../../../core/utils/text_util.dart';
+import '../widgets/image_slider_widget.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({Key? key}) : super(key: key);
@@ -25,15 +26,19 @@ class _HomePagesState extends State<HomePages> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.login_rounded),
+            icon: const Icon(Icons.account_circle_rounded),
             onPressed: () {},
           ),
 
           // Add more IconButton widgets for additional icons
         ],
       ),
-      body: SingleChildScrollView(
-        child: buildTextCustom(context, 'Hellow Home'),
+      body: const SingleChildScrollView(
+        child: Column(
+          children: [
+            ImageSliderWidget(),
+          ],
+        ),
       ),
     );
   }
