@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:villa_idealis/size_config.dart';
 import 'package:villa_idealis/src/core/utils/button_util.dart';
@@ -17,8 +18,16 @@ class HomePages extends StatefulWidget {
 }
 
 class _HomePagesState extends State<HomePages> {
+  // ignore: unused_field
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
+
   @override
   Widget build(BuildContext context) {
+    final EdgeInsets paddingCard = EdgeInsets.symmetric(
+        vertical: getProportionateScreenWidth(context, 8),
+        horizontal: getProportionateScreenWidth(context, 12));
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kWhiteColor,
@@ -57,7 +66,40 @@ class _HomePagesState extends State<HomePages> {
               );
             }).toList(),
             buildOutlinedButton(context, "Lihat lebih banyak",
-                onPressed: () => {})
+                onPressed: () => {}),
+            Padding(
+              padding: paddingCard,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  buildTextCustom(context, 'Blok Mawar',
+                      weight: 'w500', fontSize: 16),
+                  buildTextButton(context, 'Lebih banyak',
+                      onPressed: () => {},
+                      width: 120,
+                      icon: Icons.arrow_forward_rounded,
+                      iconPosition: 'right')
+                ],
+              ),
+            ),
+            CarouselSlider(
+              items: VillaItems.villas,
+              carouselController: _controller,
+              options: CarouselOptions(
+                autoPlay: false,
+                enlargeCenterPage: false,
+                enableInfiniteScroll: false,
+                viewportFraction: 0.9,
+                aspectRatio: 1.05,
+                padEnds: false,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current = index;
+                  });
+                },
+              ),
+            ),
           ],
         ),
       ),

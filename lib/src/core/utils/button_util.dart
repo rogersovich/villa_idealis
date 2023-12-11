@@ -29,35 +29,54 @@ IconButton buildIconButton(BuildContext context, IconData iconURL,
 
 //* TEXT BUTTON
 TextButton buildTextButton(BuildContext context, String text,
-    {double rounded = 3,
+    {double rounded = 4,
     bool block = false,
-    double width = 50,
-    double height = 15,
-    double fontSize = 6,
+    double width = 100,
+    double height = 30,
+    double fontSize = 12,
     FontWeight? fontWeight,
     Color? color,
     EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
     IconData? icon,
+    String? iconPosition = 'left',
     required VoidCallback? onPressed,
     VoidCallback? onLongPress}) {
   if (icon != null) {
-    return TextButton.icon(
+    final Icon iconCustom =
+        iconButtonCustom(context, icon, kPrimaryColor, fontSize, onPressed);
+    final SizedBox spaceIconAndText = SizedBox(
+      width: getProportionateScreenWidth(context, 6),
+    );
+    final List<Widget> childrenTextIcon = iconPosition == "left"
+        ? [
+            iconCustom,
+            spaceIconAndText,
+            Text(text),
+          ]
+        : [
+            Text(text),
+            spaceIconAndText,
+            iconCustom,
+          ];
+
+    return TextButton(
         onPressed: onPressed,
         onLongPress: onLongPress,
-        icon:
-            iconButtonCustom(context, icon, kPrimaryColor, fontSize, onPressed),
         style: textButtonStyle(
             context,
             block,
-            getProportionateScreenHeight(context, width),
-            getProportionateScreenHeight(context, height),
-            getProportionateScreenHeight(context, fontSize),
+            getProportionateScreenWidth(context, width),
+            getProportionateScreenWidth(context, height),
+            getProportionateScreenWidth(context, fontSize),
             convertToFontWeight(weight: 500),
             color ?? kPrimaryColor,
-            getProportionateScreenHeight(context, padding.horizontal),
-            getProportionateScreenHeight(context, padding.vertical),
-            getProportionateScreenHeight(context, rounded)),
-        label: Text(text));
+            getProportionateScreenWidth(context, padding.horizontal),
+            getProportionateScreenWidth(context, padding.vertical),
+            getProportionateScreenWidth(context, rounded)),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: childrenTextIcon,
+        ));
   } else {
     return TextButton(
       onPressed: onPressed,
@@ -65,14 +84,14 @@ TextButton buildTextButton(BuildContext context, String text,
       style: textButtonStyle(
           context,
           block,
-          getProportionateScreenHeight(context, width),
-          getProportionateScreenHeight(context, height),
-          getProportionateScreenHeight(context, fontSize),
+          getProportionateScreenWidth(context, width),
+          getProportionateScreenWidth(context, height),
+          getProportionateScreenWidth(context, fontSize),
           convertToFontWeight(weight: 500),
           color ?? kPrimaryColor,
-          getProportionateScreenHeight(context, padding.horizontal),
-          getProportionateScreenHeight(context, padding.vertical),
-          getProportionateScreenHeight(context, rounded)),
+          getProportionateScreenWidth(context, padding.horizontal),
+          getProportionateScreenWidth(context, padding.vertical),
+          getProportionateScreenWidth(context, rounded)),
       child: Text(text),
     );
   }
