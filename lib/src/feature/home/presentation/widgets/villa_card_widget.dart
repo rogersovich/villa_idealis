@@ -3,6 +3,7 @@ import 'package:villa_idealis/size_config.dart';
 import 'package:villa_idealis/src/core/constant/color_constant.dart';
 import 'package:villa_idealis/src/core/utils/button_util.dart';
 
+import '../../../../../routes.dart';
 import '../../data/models/facility_models.dart';
 
 class VillaCard extends StatelessWidget {
@@ -136,7 +137,8 @@ class VillaCard extends StatelessWidget {
                       ),
                     ])),
                     buildElevatedButton(context, 'Detail',
-                        onPressed: () => {},
+                        onPressed: () =>
+                            {Navigator.pushNamed(context, Routes.detailVilla)},
                         width: 90,
                         height: 30,
                         icon: Icons.arrow_forward_rounded,
