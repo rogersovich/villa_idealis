@@ -4,4 +4,5 @@ class AppConstants {
   static const double defaultPadding = 8.0;
   static const double defaultLetterSpacing = 0.3;
   static const String appName = 'Villa Idealis App';
+  static const String urlImage = 'assets/images';
 }

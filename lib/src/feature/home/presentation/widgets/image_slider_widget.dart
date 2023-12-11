@@ -21,25 +21,21 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
   Widget build(BuildContext context) {
     const List<String> imgList = ImageData.imgList;
     final marginHozCarousel = getProportionateScreenWidth(context, 10);
+    final BorderRadius roundedImage =
+        BorderRadius.circular(getProportionateScreenWidth(context, 10));
+    final double dotWidth = getProportionateScreenWidth(context, 7);
+    final double dotHeight = getProportionateScreenWidth(context, 7);
 
     final List<Widget> imageSliders = imgList
         .map((item) => Container(
               margin: EdgeInsets.only(
                   bottom: 5, left: marginHozCarousel, right: marginHozCarousel),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: roundedImage,
                 child: Stack(
                   children: <Widget>[
-                    Image.network(item, fit: BoxFit.cover, width: 1000.0),
-                    Positioned(
-                      bottom: 0.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 0.0),
-                      ),
-                    ),
+                    Image.asset(item,
+                        fit: BoxFit.cover, width: double.maxFinite),
                   ],
                 ),
               ),
@@ -73,8 +69,8 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.fastEaseInToSlowEaseOut,
                 child: Container(
-                  width: _current == entry.key ? 30.0 : 10.0,
-                  height: 10.0,
+                  width: _current == entry.key ? 30.0 : dotWidth,
+                  height: dotHeight,
                   margin: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 4.0),
                   decoration: BoxDecoration(
