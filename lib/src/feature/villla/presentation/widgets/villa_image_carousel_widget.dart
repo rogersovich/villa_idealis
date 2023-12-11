@@ -54,7 +54,7 @@ class _VillaImageCarouselWidgetState extends State<VillaImageCarouselWidget> {
             enlargeCenterPage: true,
             enlargeFactor: 0.1,
             viewportFraction: 1,
-            aspectRatio: 16 / 8.5,
+            aspectRatio: 16 / 9,
             onPageChanged: (index, reason) {
               setState(() {
                 _current = index;

@@ -52,7 +52,7 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
             enlargeCenterPage: true,
             enlargeFactor: 0.1,
             viewportFraction: 1,
-            aspectRatio: 2.2,
+            aspectRatio: 16 / 9,
             onPageChanged: (index, reason) {
               setState(() {
                 _current = index;

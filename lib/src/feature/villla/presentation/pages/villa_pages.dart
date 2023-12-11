@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:villa_idealis/size_config.dart';
 import 'package:villa_idealis/src/core/constant/color_constant.dart';
 import 'package:villa_idealis/src/core/utils/button_util.dart';
@@ -16,6 +17,21 @@ class VillaPages extends StatefulWidget {
 }
 
 class _VillaPagesState extends State<VillaPages> {
+  // bool _hasCallSupport = false;
+  // Future<void>? _launched;
+  // String _phone = '089627210822';
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Check for phone call support.
+  //   canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
+  //     setState(() {
+  //       _hasCallSupport = result;
+  //     });
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     final List<ListFacilities> listFacility = [
@@ -26,6 +42,22 @@ class _VillaPagesState extends State<VillaPages> {
     ];
     final double fontSizeTextIcon = getProportionateScreenWidth(context, 12);
     final double fontSizeIcon = getProportionateScreenWidth(context, 20);
+
+    Future<void> launchInBrowser() async {
+      const phoneNumber = '6289627210822';
+      const message = 'Hello, this is a template message!\n'
+          'This is a new line.\n'
+          'Another line here.';
+
+      final whatsappUrl = Uri.parse(
+          'https://wa.me/$phoneNumber/?text=${Uri.encodeComponent(message)}');
+      if (!await launchUrl(
+        whatsappUrl,
+        mode: LaunchMode.platformDefault,
+      )) {
+        throw Exception('Could not launch');
+      }
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -77,9 +109,7 @@ class _VillaPagesState extends State<VillaPages> {
                               color: kWhiteColor,
                               size: 16,
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                            onPressed: () {},
                           ),
                         ),
                         // Add more icons here as needed
@@ -97,7 +127,7 @@ class _VillaPagesState extends State<VillaPages> {
                   children: [
                     //todo Interesting Points
                     buildTextCustom(context, 'Yang menarik dari tempat ini',
-                        weight: 'w600', fontSize: 18),
+                        weight: 'w600', fontSize: 16),
                     SizedBox(height: getProportionateScreenWidth(context, 20)),
                     Column(
                       children: [
@@ -116,13 +146,21 @@ class _VillaPagesState extends State<VillaPages> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 buildTextCustom(context, 'Lokasi Strategis',
-                                    fontSize: 15),
+                                    fontSize: 14),
                                 SizedBox(
                                     height: getProportionateScreenWidth(
                                         context, 4)),
-                                buildTextCustom(context,
-                                    '90% tamu memberikan bintang 5 dan sangat suka...',
-                                    fontSize: 12, color: Colors.black54)
+                                RichText(
+                                  text: TextSpan(
+                                      text:
+                                          "90% tamu memberikan bintang 5 dan sangat suka...",
+                                      style: TextStyle(
+                                          height: 1.3,
+                                          fontSize: getProportionateScreenWidth(
+                                              context, 13),
+                                          color:
+                                              Colors.black.withOpacity(0.5))),
+                                ),
                               ],
                             )
                           ],
@@ -143,17 +181,22 @@ class _VillaPagesState extends State<VillaPages> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                buildTextCustom(context, 'Pemandangan Indah',
-                                    fontSize: 15),
+                                buildTextCustom(context, 'Lokasi Strategis',
+                                    fontSize: 14),
                                 SizedBox(
                                     height: getProportionateScreenWidth(
                                         context, 4)),
-                                buildTextCustom(
-                                  context,
-                                  '90% tamu memberikan bintang 5 dan sangat suka...',
-                                  fontSize: 12,
-                                  color: Colors.black54,
-                                )
+                                RichText(
+                                  text: TextSpan(
+                                      text:
+                                          "90% tamu memberikan bintang 5 dan sangat suka...",
+                                      style: TextStyle(
+                                          height: 1.3,
+                                          fontSize: getProportionateScreenWidth(
+                                              context, 13),
+                                          color:
+                                              Colors.black.withOpacity(0.5))),
+                                ),
                               ],
                             )
                           ],
@@ -174,17 +217,22 @@ class _VillaPagesState extends State<VillaPages> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                buildTextCustom(context, 'Kolam Renang',
-                                    fontSize: 15),
+                                buildTextCustom(context, 'Lokasi Strategis',
+                                    fontSize: 14),
                                 SizedBox(
                                     height: getProportionateScreenWidth(
                                         context, 4)),
-                                buildTextCustom(
-                                  context,
-                                  '90% tamu memberikan bintang 5 dan sangat suka...',
-                                  fontSize: 12,
-                                  color: Colors.black54,
-                                )
+                                RichText(
+                                  text: TextSpan(
+                                      text:
+                                          "90% tamu memberikan bintang 5 dan sangat suka...",
+                                      style: TextStyle(
+                                          height: 1.3,
+                                          fontSize: getProportionateScreenWidth(
+                                              context, 13),
+                                          color:
+                                              Colors.black.withOpacity(0.5))),
+                                ),
                               ],
                             )
                           ],
@@ -194,12 +242,14 @@ class _VillaPagesState extends State<VillaPages> {
                     SizedBox(height: getProportionateScreenWidth(context, 20)),
                     //todo Description
                     buildTextCustom(context, 'Tentang Mawar 1',
-                        weight: 'w600', fontSize: 18),
+                        weight: 'w600', fontSize: 16),
                     SizedBox(height: getProportionateScreenWidth(context, 10)),
                     RichText(
                         text: TextSpan(
-                            style:
-                                TextStyle(color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(
+                                color: Colors.black.withOpacity(0.5),
+                                fontSize:
+                                    getProportionateScreenWidth(context, 13)),
                             children: const [
                           TextSpan(
                               text:
@@ -223,10 +273,11 @@ class _VillaPagesState extends State<VillaPages> {
                     SizedBox(height: getProportionateScreenWidth(context, 20)),
                     //todo List Fasilitas
                     buildTextCustom(context, 'Fasilitas yang di tawarkan',
-                        weight: 'w600', fontSize: 18),
+                        weight: 'w600', fontSize: 16),
                     SizedBox(height: getProportionateScreenWidth(context, 10)),
                     GridView.builder(
                       shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2, // Number of icons per row
@@ -236,7 +287,6 @@ class _VillaPagesState extends State<VillaPages> {
                       itemCount: listFacility.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          // decoration: BoxDecoration(color: kPrimaryColor),
                           padding: EdgeInsets.symmetric(
                               horizontal:
                                   getProportionateScreenWidth(context, 2)),
@@ -286,7 +336,7 @@ class _VillaPagesState extends State<VillaPages> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 buildTextCustom(context, 'Mawar 1',
-                                    fontSize: 15, weight: 'w500'),
+                                    fontSize: 14, weight: 'w500'),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -295,21 +345,21 @@ class _VillaPagesState extends State<VillaPages> {
                                       Icons.confirmation_num_rounded,
                                       color: kPrimaryColor,
                                       size: getProportionateScreenWidth(
-                                          context, 20),
+                                          context, 18),
                                     ),
                                     SizedBox(
                                         width: getProportionateScreenWidth(
                                             context,
                                             8)), // Add some spacing between the icon and text
                                     buildTextCustom(context, 'CBM-DA001',
-                                        fontSize: 13)
+                                        fontSize: 12)
                                   ],
                                 ),
                               ],
                             ),
                             SizedBox(
                                 height:
-                                    getProportionateScreenWidth(context, 8)),
+                                    getProportionateScreenWidth(context, 12)),
                             RichText(
                               text: TextSpan(
                                   text:
@@ -322,18 +372,18 @@ class _VillaPagesState extends State<VillaPages> {
                             ),
                             SizedBox(
                                 height:
-                                    getProportionateScreenWidth(context, 10)),
+                                    getProportionateScreenWidth(context, 16)),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 buildTextCustom(context, 'Chat to Whatsapp',
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     weight: 'w500',
                                     color: Colors.black.withOpacity(0.7)),
                                 buildTextCustom(
                                   context,
                                   '08937812892',
-                                  fontSize: 13,
+                                  fontSize: 12,
                                   color: kPrimaryColor,
                                 )
                               ],
@@ -342,8 +392,9 @@ class _VillaPagesState extends State<VillaPages> {
                                 height:
                                     getProportionateScreenWidth(context, 10)),
                             buildElevatedButton(context, "Chat Sekarang",
-                                onPressed: () => {},
+                                onPressed: () => {launchInBrowser()},
                                 width: double.infinity,
+                                height: 34,
                                 icon: Icons.chat_rounded,
                                 fontSize: 13)
                           ],

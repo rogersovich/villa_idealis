@@ -65,8 +65,12 @@ class _HomePagesState extends State<HomePages> {
                 facilities: villa.facilities,
               );
             }).toList(),
-            buildOutlinedButton(context, "Lihat lebih banyak",
-                onPressed: () => {}),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(context, 10)),
+              child: buildOutlinedButton(context, "Lihat lebih banyak",
+                  onPressed: () => {}, width: double.infinity, height: 34),
+            ),
             Padding(
               padding: paddingCard,
               child: Row(
@@ -91,7 +95,7 @@ class _HomePagesState extends State<HomePages> {
                 enlargeCenterPage: false,
                 enableInfiniteScroll: false,
                 viewportFraction: 0.9,
-                aspectRatio: 1.05,
+                aspectRatio: 0.97,
                 padEnds: false,
                 onPageChanged: (index, reason) {
                   setState(() {
