@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:villa_idealis/size_config.dart';
+import 'package:villa_idealis/src/core/utils/button_util.dart';
 
 import '../../../../core/constant/color_constant.dart';
 import '../../../../core/utils/text_util.dart';
@@ -22,7 +24,7 @@ class _HomePagesState extends State<HomePages> {
         backgroundColor: kWhiteColor,
         surfaceTintColor: kWhiteColor,
         title: buildTextCustom(context, 'Home',
-            color: kBlackColor, fontSize: 9, weight: 'w600'),
+            color: kBlackColor, fontSize: 16, weight: 'w600'),
         leading: IconButton(
           icon: const Icon(Icons.home),
           onPressed: () => {},
@@ -35,9 +37,17 @@ class _HomePagesState extends State<HomePages> {
         ],
       ),
       body: SingleChildScrollView(
+        padding:
+            EdgeInsets.only(bottom: getProportionateScreenWidth(context, 8)),
         child: Column(
           children: [
             const ImageSliderWidget(),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: getProportionateScreenWidth(context, 8)),
+              child: buildTextCustom(context, "Rekomendasi Villa Terbaik",
+                  weight: 'w700', fontSize: 18),
+            ),
             ...VillaItems.villas.map((villa) {
               return VillaCard(
                 thumbnailUrl: villa.thumbnailUrl,
@@ -46,6 +56,8 @@ class _HomePagesState extends State<HomePages> {
                 facilities: villa.facilities,
               );
             }).toList(),
+            buildOutlinedButton(context, "Lihat lebih banyak",
+                onPressed: () => {})
           ],
         ),
       ),

@@ -9,7 +9,7 @@ Icon iconButtonCustom(BuildContext context, IconData icon, Color? color,
   return Icon(
     icon,
     color: onPressed != null ? color ?? kPrimaryColor : null,
-    size: getProportionateScreenHeight(context, fontSize),
+    size: getProportionateScreenWidth(context, fontSize),
   );
 }
 
@@ -82,8 +82,8 @@ TextButton buildTextButton(BuildContext context, String text,
 ElevatedButton buildElevatedButton(BuildContext context, String text,
     {double rounded = 4,
     bool block = false,
-    double width = 50,
-    double height = 15,
+    double width = 130,
+    double height = 30,
     double fontSize = 12,
     FontWeight? fontWeight,
     Color? color,
@@ -92,28 +92,48 @@ ElevatedButton buildElevatedButton(BuildContext context, String text,
     double elevation = 0,
     EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
     IconData? icon,
+    String? iconPosition = 'left',
     required VoidCallback? onPressed,
     VoidCallback? onLongPress}) {
   if (icon != null) {
-    return ElevatedButton.icon(
-        onPressed: onPressed,
-        onLongPress: onLongPress,
-        icon: iconButtonCustom(context, icon, kWhiteColor, fontSize, onPressed),
-        style: elevatedButtonStyle(
-            context,
-            block,
-            getProportionateScreenWidth(context, width),
-            getProportionateScreenWidth(context, height),
-            getProportionateScreenWidth(context, fontSize),
-            convertToFontWeight(weight: 500),
-            onPressed != null ? color ?? kWhiteColor : null,
-            onPressed != null ? bgColor ?? kPrimaryColor : null,
-            getProportionateScreenWidth(context, padding.horizontal),
-            getProportionateScreenWidth(context, padding.vertical),
-            getProportionateScreenWidth(context, rounded),
-            shadowColor,
-            elevation),
-        label: Text(text));
+    final Icon iconCustom =
+        iconButtonCustom(context, icon, kWhiteColor, fontSize, onPressed);
+    final SizedBox spaceIconAndText = SizedBox(
+      width: getProportionateScreenWidth(context, 6),
+    );
+    final List<Widget> childrenTextIcon = iconPosition == "left"
+        ? [
+            iconCustom,
+            spaceIconAndText,
+            Text(text),
+          ]
+        : [
+            Text(text),
+            spaceIconAndText,
+            iconCustom,
+          ];
+    return ElevatedButton(
+      onPressed: onPressed,
+      onLongPress: onLongPress,
+      style: elevatedButtonStyle(
+          context,
+          block,
+          getProportionateScreenWidth(context, width),
+          getProportionateScreenWidth(context, height),
+          getProportionateScreenWidth(context, fontSize),
+          convertToFontWeight(weight: 500),
+          onPressed != null ? color ?? kWhiteColor : null,
+          onPressed != null ? bgColor ?? kPrimaryColor : null,
+          getProportionateScreenWidth(context, padding.horizontal),
+          getProportionateScreenWidth(context, padding.vertical),
+          getProportionateScreenWidth(context, rounded),
+          shadowColor,
+          elevation),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: childrenTextIcon,
+      ),
+    );
   } else {
     return ElevatedButton(
       onPressed: onPressed,
@@ -139,13 +159,14 @@ ElevatedButton buildElevatedButton(BuildContext context, String text,
 
 //* OUTLINED BUTTON
 OutlinedButton buildOutlinedButton(BuildContext context, String text,
-    {double rounded = 3,
+    {double rounded = 4,
     bool block = false,
-    double width = 50,
-    double height = 15,
-    double fontSize = 6,
+    double width = 130,
+    double height = 30,
+    double fontSize = 12,
     FontWeight? fontWeight,
     Color? color,
+    Color? borderColor,
     Color? bgColor,
     EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
     IconData? icon,
@@ -160,15 +181,16 @@ OutlinedButton buildOutlinedButton(BuildContext context, String text,
         style: outlinedButtonStyle(
             context,
             block,
-            getProportionateScreenHeight(context, width),
-            getProportionateScreenHeight(context, height),
-            getProportionateScreenHeight(context, fontSize),
+            getProportionateScreenWidth(context, width),
+            getProportionateScreenWidth(context, height),
+            getProportionateScreenWidth(context, fontSize),
             convertToFontWeight(weight: 500),
             color ?? kPrimaryColor,
             bgColor ?? Colors.transparent,
-            getProportionateScreenHeight(context, padding.horizontal),
-            getProportionateScreenHeight(context, padding.vertical),
-            getProportionateScreenHeight(context, rounded)),
+            borderColor ?? kPrimaryColor,
+            getProportionateScreenWidth(context, padding.horizontal),
+            getProportionateScreenWidth(context, padding.vertical),
+            getProportionateScreenWidth(context, rounded)),
         label: Text(text));
   } else {
     return OutlinedButton(
@@ -177,15 +199,16 @@ OutlinedButton buildOutlinedButton(BuildContext context, String text,
       style: outlinedButtonStyle(
           context,
           block,
-          getProportionateScreenHeight(context, width),
-          getProportionateScreenHeight(context, height),
-          getProportionateScreenHeight(context, fontSize),
+          getProportionateScreenWidth(context, width),
+          getProportionateScreenWidth(context, height),
+          getProportionateScreenWidth(context, fontSize),
           convertToFontWeight(weight: 500),
           color ?? kPrimaryColor,
           bgColor ?? Colors.transparent,
-          getProportionateScreenHeight(context, padding.horizontal),
-          getProportionateScreenHeight(context, padding.vertical),
-          getProportionateScreenHeight(context, rounded)),
+          borderColor ?? kPrimaryColor,
+          getProportionateScreenWidth(context, padding.horizontal),
+          getProportionateScreenWidth(context, padding.vertical),
+          getProportionateScreenWidth(context, rounded)),
       child: Text(text),
     );
   }

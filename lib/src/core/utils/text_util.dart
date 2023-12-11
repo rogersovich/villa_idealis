@@ -92,7 +92,7 @@ TextOverflow getTextOverflowFromString(String overflow) {
 
 Text buildTextCustom(BuildContext context, String text,
     {Color color = Colors.black,
-    double fontSize = 8,
+    double fontSize = 16,
     String weight = 'normal',
     String align = 'left',
     String? fontFamily,
@@ -108,7 +108,7 @@ Text buildTextCustom(BuildContext context, String text,
       style: TextStyle(
         color: color,
         fontWeight: getFontWeightFromString(weight),
-        fontSize: getProportionateScreenHeight(context, fontSize),
+        fontSize: getProportionateScreenWidth(context, fontSize),
         fontFamily: fontFamily,
         letterSpacing: letterSpacing,
         height: lineHeight,

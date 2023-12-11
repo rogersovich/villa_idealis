@@ -95,11 +95,13 @@ ButtonStyle outlinedButtonStyle(
     FontWeight fontWeight,
     Color color,
     Color bgColor,
+    Color borderColor,
     double px,
     double py,
     double rounded) {
   return TextButton.styleFrom(
     foregroundColor: color,
+    side: BorderSide(color: borderColor),
     backgroundColor: bgColor,
     shadowColor: Colors.transparent,
     minimumSize: block ? Size.fromHeight(height) : Size(width, height),

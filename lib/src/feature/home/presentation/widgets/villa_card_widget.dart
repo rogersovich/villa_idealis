@@ -136,7 +136,11 @@ class VillaCard extends StatelessWidget {
                       ),
                     ])),
                     buildElevatedButton(context, 'Detail',
-                        onPressed: () => {}, width: 90, height: 30)
+                        onPressed: () => {},
+                        width: 90,
+                        height: 30,
+                        icon: Icons.arrow_forward_rounded,
+                        iconPosition: 'right')
                   ],
                 ),
               ],
