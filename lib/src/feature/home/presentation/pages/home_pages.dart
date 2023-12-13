@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:villa_idealis/size_config.dart';
 import 'package:villa_idealis/src/core/utils/button_util.dart';
 
+import '../../../../../routes.dart';
 import '../../../../core/constant/color_constant.dart';
 import '../../../../core/utils/text_util.dart';
 import '../../data/datasources/villa_items_data.dart';
@@ -41,7 +42,9 @@ class _HomePagesState extends State<HomePages> {
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle_rounded),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.example);
+            },
           ),
         ],
       ),
