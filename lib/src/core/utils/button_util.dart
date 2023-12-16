@@ -17,14 +17,22 @@ Icon iconButtonCustom(BuildContext context, IconData icon, Color? color,
 IconButton buildIconButton(BuildContext context, IconData iconURL,
     {required VoidCallback? onPressed,
     double size = 12,
+    double padding = 2,
     Color? color,
     String? label}) {
+  final iconSize = getProportionateScreenHeight(context, size);
+  final iconPadding = getProportionateScreenHeight(context, padding);
   return IconButton(
       onPressed: onPressed,
+      padding: EdgeInsets.zero,
+      style: ButtonStyle(
+          minimumSize: MaterialStateProperty.all<Size>(
+            Size(iconSize, iconSize),
+          ),
+          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+              EdgeInsets.all(iconPadding))),
       icon: Icon(iconURL,
-          color: color ?? kPrimaryColor,
-          size: getProportionateScreenHeight(context, size),
-          semanticLabel: label));
+          color: color ?? kPrimaryColor, size: iconSize, semanticLabel: label));
 }
 
 //* TEXT BUTTON

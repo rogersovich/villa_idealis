@@ -1,9 +1,9 @@
-// features/home/presentation/image_slider_widget.dart
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:villa_idealis/size_config.dart';
 import '../../../../core/constant/color_constant.dart';
 import '../../data/datasources/villa_images_data.dart';
+import 'modal_all_image_widget.dart';
 
 class VillaImageCarouselWidget extends StatefulWidget {
   const VillaImageCarouselWidget({super.key});
@@ -43,59 +43,74 @@ class _VillaImageCarouselWidgetState extends State<VillaImageCarouselWidget> {
             ))
         .toList();
 
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        CarouselSlider(
-          items: imageSliders,
-          carouselController: _controller,
-          options: CarouselOptions(
-            autoPlay: false,
-            enlargeCenterPage: true,
-            enlargeFactor: 0.1,
-            viewportFraction: 1,
-            aspectRatio: 16 / 9,
-            onPageChanged: (index, reason) {
-              setState(() {
-                _current = index;
-              });
-            },
+    return GestureDetector(
+      onTap: () {
+        _showModalBottomSheet(context);
+      },
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          CarouselSlider(
+            items: imageSliders,
+            carouselController: _controller,
+            options: CarouselOptions(
+              autoPlay: false,
+              enlargeCenterPage: true,
+              enlargeFactor: 0.1,
+              viewportFraction: 1,
+              aspectRatio: 16 / 9,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              },
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: imgList.asMap().entries.map((entry) {
-              return GestureDetector(
-                onTap: () => _controller.animateToPage(entry.key),
-                child: AnimatedSize(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.fastEaseInToSlowEaseOut,
-                  child: Container(
-                    width: _current == entry.key ? 30.0 : dotWidth,
-                    height: dotHeight,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                      shape: _current == entry.key
-                          ? BoxShape.rectangle
-                          : BoxShape.circle,
-                      borderRadius: _current == entry.key
-                          ? BorderRadius.circular(5.0)
-                          : null,
-                      color: (Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : kWhiteColor)
-                          .withOpacity(_current == entry.key ? 0.9 : 0.4),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: imgList.asMap().entries.map((entry) {
+                return GestureDetector(
+                  onTap: () => _controller.animateToPage(entry.key),
+                  child: AnimatedSize(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.fastEaseInToSlowEaseOut,
+                    child: Container(
+                      width: _current == entry.key ? 30.0 : dotWidth,
+                      height: dotHeight,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 4.0),
+                      decoration: BoxDecoration(
+                        shape: _current == entry.key
+                            ? BoxShape.rectangle
+                            : BoxShape.circle,
+                        borderRadius: _current == entry.key
+                            ? BorderRadius.circular(5.0)
+                            : null,
+                        color: (Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : kWhiteColor)
+                            .withOpacity(_current == entry.key ? 0.9 : 0.4),
+                      ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              }).toList(),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
+    );
+  }
+
+  void _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const ModalAllImageWidget();
+      },
     );
   }
 }
