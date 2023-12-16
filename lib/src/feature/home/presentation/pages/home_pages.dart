@@ -34,7 +34,7 @@ class _HomePagesState extends State<HomePages> {
         backgroundColor: kWhiteColor,
         surfaceTintColor: kWhiteColor,
         title: buildTextCustom(context, 'Beranda',
-            color: kBlackColor, fontSize: 16, weight: 'w600'),
+            color: kBlackColor, fontSize: 16, weight: 'w700'),
         leading: IconButton(
           icon: const Icon(Icons.home),
           onPressed: () => {},
@@ -81,7 +81,7 @@ class _HomePagesState extends State<HomePages> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   buildTextCustom(context, 'Blok Mawar',
-                      weight: 'w500', fontSize: 16),
+                      weight: 'w700', fontSize: 16),
                   buildTextButton(context, 'Lebih banyak',
                       onPressed: () => {},
                       width: 120,

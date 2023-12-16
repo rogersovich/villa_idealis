@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:villa_idealis/size_config.dart';
 import 'package:villa_idealis/src/core/constant/color_constant.dart';
 import 'package:villa_idealis/src/core/utils/text_util.dart';
+import 'package:villa_idealis/src/core/utils/widget_util.dart';
 
 import '../../data/datasources/villa_images_data.dart';
 
@@ -48,7 +49,7 @@ class _ModalAllImageWidgetState extends State<ModalAllImageWidget> {
               mini: true,
               child: Icon(
                 Icons.keyboard_arrow_up_rounded,
-                color: kPrimaryColor,
+                color: kBlackColor,
               ),
             ),
       body: Container(
@@ -75,7 +76,7 @@ class _ModalAllImageWidgetState extends State<ModalAllImageWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     buildTextCustom(context, "Semua gambar",
-                        weight: 'w600', fontSize: 17),
+                        weight: 'w700', fontSize: 16),
                     GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
@@ -106,25 +107,27 @@ class _ModalAllImageWidgetState extends State<ModalAllImageWidget> {
 }
 
 class ImageColumnWidget extends StatelessWidget {
-  const ImageColumnWidget({super.key});
+  const ImageColumnWidget({super.key, Key? imagekey});
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: VillaImageData.imgList.map((imageUrl) {
+      children: List.generate(VillaImageData.imgList.length, (index) {
+        final imageUrl = VillaImageData.imgList[index];
         return Column(
           children: [
             Image.asset(
               imageUrl,
               fit: BoxFit.contain,
               width: double.infinity,
-              semanticLabel: "Villa 1",
+              semanticLabel:
+                  "Villa ${index + 1}", // Use index to create a unique semantic label
             ),
             // Add additional widgets or spacing between images if needed
-            const SizedBox(height: 16.0),
+            buildSpacing(context, size: 6)
           ],
         );
-      }).toList(),
+      }),
     );
   }
 }

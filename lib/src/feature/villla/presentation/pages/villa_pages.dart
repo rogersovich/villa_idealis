@@ -113,7 +113,7 @@ class _VillaPagesState extends State<VillaPages> {
                   children: [
                     //todo Interesting Points
                     buildTextCustom(context, 'Yang menarik dari tempat ini',
-                        weight: 'w600', fontSize: 16),
+                        weight: 'w700', fontSize: 16),
                     SizedBox(height: getProportionateScreenWidth(context, 20)),
                     Column(
                       children: [
@@ -228,7 +228,7 @@ class _VillaPagesState extends State<VillaPages> {
                     SizedBox(height: getProportionateScreenWidth(context, 20)),
                     //todo Description
                     buildTextCustom(context, 'Tentang Mawar 1',
-                        weight: 'w600', fontSize: 16),
+                        weight: 'w700', fontSize: 16),
                     SizedBox(height: getProportionateScreenWidth(context, 10)),
                     RichText(
                         text: TextSpan(
@@ -259,7 +259,7 @@ class _VillaPagesState extends State<VillaPages> {
                     SizedBox(height: getProportionateScreenWidth(context, 20)),
                     //todo List Fasilitas
                     buildTextCustom(context, 'Fasilitas yang di tawarkan',
-                        weight: 'w600', fontSize: 16),
+                        weight: 'w700', fontSize: 16),
                     SizedBox(height: getProportionateScreenWidth(context, 10)),
                     GridView.builder(
                       shrinkWrap: true,
@@ -296,18 +296,22 @@ class _VillaPagesState extends State<VillaPages> {
                       },
                     ),
                     SizedBox(height: getProportionateScreenWidth(context, 5)),
-                    buildOutlinedButton(context, "Lihat semua fasilitas",
-                        onPressed: () => {
-                              showModalBottomSheet<void>(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (BuildContext context) {
-                                  return const DraggableBottomSheet();
-                                },
-                              )
-                            },
-                        width: double.infinity,
-                        height: 34),
+                    buildOutlinedButton(
+                      context,
+                      "Lihat semua fasilitas",
+                      onPressed: () => {
+                        showModalBottomSheet<void>(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (BuildContext context) {
+                            return const DraggableBottomSheet();
+                          },
+                        )
+                      },
+                      width: double.infinity,
+                      height: 34,
+                      fontSize: 12,
+                    ),
                     SizedBox(height: getProportionateScreenWidth(context, 20)),
                     Card(
                       elevation: 0,
@@ -330,7 +334,7 @@ class _VillaPagesState extends State<VillaPages> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 buildTextCustom(context, 'Mawar 1',
-                                    fontSize: 14, weight: 'w500'),
+                                    fontSize: 14, weight: 'w700'),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
