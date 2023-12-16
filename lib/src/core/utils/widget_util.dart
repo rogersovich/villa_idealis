@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import '../constant/color_constant.dart';
 
-
 //* DIVIDER
 Divider buildDivider(
   BuildContext context, {
@@ -22,9 +21,14 @@ Divider buildDivider(
   );
 }
 
-//* VERTICAL SPACING
-SizedBox buildSpacing(BuildContext context, {double height = 2}) {
-  return SizedBox(
-    height: getProportionateScreenHeight(context, height),
-  );
+//* VERTICAL & HORIZONTAL SPACING
+SizedBox buildSpacing(BuildContext context,
+    {double size = 2, String type = 'vertical'}) {
+  return type == 'vertical'
+      ? SizedBox(
+          height: getProportionateScreenHeight(context, size),
+        )
+      : SizedBox(
+          width: getProportionateScreenWidth(context, size),
+        );
 }

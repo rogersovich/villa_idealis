@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:villa_idealis/size_config.dart';
@@ -6,32 +8,17 @@ import 'package:villa_idealis/src/core/utils/button_util.dart';
 import 'package:villa_idealis/src/core/utils/text_util.dart';
 
 import '../../../home/data/models/facility_models.dart';
+import '../widgets/modal_all_facility_widget.dart';
 import '../widgets/villa_image_carousel_widget.dart';
 
 class VillaPages extends StatefulWidget {
   const VillaPages({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _VillaPagesState createState() => _VillaPagesState();
 }
 
 class _VillaPagesState extends State<VillaPages> {
-  // bool _hasCallSupport = false;
-  // Future<void>? _launched;
-  // String _phone = '089627210822';
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // Check for phone call support.
-  //   canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
-  //     setState(() {
-  //       _hasCallSupport = result;
-  //     });
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     final List<ListFacilities> listFacility = [
@@ -45,9 +32,8 @@ class _VillaPagesState extends State<VillaPages> {
 
     Future<void> launchInBrowser() async {
       const phoneNumber = '6289627210822';
-      const message = 'Hello, this is a template message!\n'
-          'This is a new line.\n'
-          'Another line here.';
+      const message = 'Halo, Saya Customer Idealis!\n'
+          'ingin membooking villa untuk tanggal 17 Desember apakah masih ada ?';
 
       final whatsappUrl = Uri.parse(
           'https://wa.me/$phoneNumber/?text=${Uri.encodeComponent(message)}');
@@ -311,7 +297,15 @@ class _VillaPagesState extends State<VillaPages> {
                     ),
                     SizedBox(height: getProportionateScreenWidth(context, 5)),
                     buildOutlinedButton(context, "Lihat semua fasilitas",
-                        onPressed: () => {},
+                        onPressed: () => {
+                              showModalBottomSheet<void>(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return const DraggableBottomSheet();
+                                },
+                              )
+                            },
                         width: double.infinity,
                         height: 34),
                     SizedBox(height: getProportionateScreenWidth(context, 20)),

@@ -17,12 +17,11 @@ class ExamplePages extends StatefulWidget {
 
 class _ExamplePagesState extends State<ExamplePages> {
   Dio dio = Dio();
-  late Future<CharactersReponse> charactersFuture;
+  // late Future<CharactersReponse> charactersFuture;
 
   @override
   void initState() {
     super.initState();
-    charactersFuture = fetchData();
   }
 
   Future<CharactersReponse> fetchData() async {
@@ -60,7 +59,7 @@ class _ExamplePagesState extends State<ExamplePages> {
         child: Column(
           children: [
             FutureBuilder<CharactersReponse>(
-              future: charactersFuture,
+              future: fetchData(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
