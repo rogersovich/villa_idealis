@@ -33,7 +33,7 @@ class _HomePagesState extends State<HomePages> {
       appBar: AppBar(
         backgroundColor: kWhiteColor,
         surfaceTintColor: kWhiteColor,
-        title: buildTextCustom(context, 'Home',
+        title: buildTextCustom(context, 'Beranda',
             color: kBlackColor, fontSize: 16, weight: 'w600'),
         leading: IconButton(
           icon: const Icon(Icons.home),

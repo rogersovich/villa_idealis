@@ -15,50 +15,93 @@ class ModalAllImageWidget extends StatefulWidget {
 }
 
 class _ModalAllImageWidgetState extends State<ModalAllImageWidget> {
+  final ScrollController _scrollController = ScrollController();
+  bool _isAtTop = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    setState(() {
+      _isAtTop = _scrollController.offset <= 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: kWhiteColor,
-      height: double.infinity,
-      width: double.infinity,
-      padding: EdgeInsets.only(
-        top: MediaQueryData.fromView(View.of(context)).padding.top,
-        left: getProportionateScreenWidth(context, 16),
-        right: getProportionateScreenWidth(context, 16),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  bottom: getProportionateScreenWidth(context, 10),
-                  top: getProportionateScreenWidth(context, 4)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  buildTextCustom(context, "Semua gambar",
-                      weight: 'w600', fontSize: 17),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.close_rounded,
-                      color: kErrorColor,
-                      size: getProportionateScreenWidth(context, 20),
-                    ),
-                  )
-                ],
+    return Scaffold(
+      floatingActionButton: _isAtTop
+          ? null
+          : FloatingActionButton(
+              onPressed: () {
+                _scrollController.animateTo(
+                  0.0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              },
+              backgroundColor: kWhiteColor,
+              shape: const CircleBorder(),
+              mini: true,
+              child: Icon(
+                Icons.keyboard_arrow_up_rounded,
+                color: kPrimaryColor,
               ),
             ),
-            const ImageColumnWidget(),
-          ],
+      body: Container(
+        color: kWhiteColor,
+        height: double.infinity,
+        width: double.infinity,
+        padding: EdgeInsets.only(
+          top: MediaQueryData.fromView(View.of(context)).padding.top,
+          left: getProportionateScreenWidth(context, 16),
+          right: getProportionateScreenWidth(context, 16),
+        ),
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: getProportionateScreenWidth(context, 10),
+                    top: getProportionateScreenWidth(context, 4)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    buildTextCustom(context, "Semua gambar",
+                        weight: 'w600', fontSize: 17),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close_rounded,
+                        color: kErrorColor,
+                        size: getProportionateScreenWidth(context, 20),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const ImageColumnWidget(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
   }
 }
 
