@@ -37,7 +37,7 @@ class _HomePagesState extends State<HomePages> {
             color: kBlackColor, fontSize: 16, weight: 'w700'),
         leading: IconButton(
           icon: const Icon(Icons.home),
-          onPressed: () => {},
+          onPressed: () => Navigator.pushNamed(context, Routes.onboarding),
         ),
         actions: [
           IconButton(

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'SF Pro',
           colorScheme: ColorScheme.fromSeed(seedColor: kPrimaryColor)
               .copyWith(background: kWhiteColor)),
-      initialRoute: Routes.home, //? Set the initial route
+      initialRoute: Routes.onboarding, //? Set the initial route
       onGenerateRoute: Routes
           .generateRoute, //? Use the generateRoute function from routes.dart
       debugShowCheckedModeBanner: true,
