@@ -25,6 +25,7 @@ IconButton buildIconButton(BuildContext context, IconData iconURL,
   return IconButton(
       onPressed: onPressed,
       padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(),
       style: ButtonStyle(
           minimumSize: MaterialStateProperty.all<Size>(
             Size(iconSize, iconSize),

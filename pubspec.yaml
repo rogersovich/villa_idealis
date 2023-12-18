@@ -92,9 +92,18 @@ flutter:
           weight: 600
         - asset: assets/fonts/OpenSans-Bold.ttf
           weight: 700
-    - family: Playfair Display
+    - family: SF Pro
       fonts:
-        - asset: assets/fonts/PlayfairDisplay-Regular.ttf
+        - asset: assets/fonts/sf-pro-text-light.woff
+          weight: 300
+        - asset: assets/fonts/sf-pro-text-regular.woff
+          weight: 400
+        - asset: assets/fonts/sf-pro-text-medium.woff
+          weight: 500
+        - asset: assets/fonts/sf-pro-text-semibold.woff
+          weight: 600
+        - asset: assets/fonts/sf-pro-text-bold.woff
+          weight: 700
   
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

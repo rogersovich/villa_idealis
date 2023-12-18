@@ -28,6 +28,7 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
 
     final List<Widget> imageSliders = imgList
         .map((item) => Container(
+              alignment: Alignment.center,
               margin: EdgeInsets.only(
                   bottom: 5, left: marginHozCarousel, right: marginHozCarousel),
               child: ClipRRect(

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Idealis App',
       theme: ThemeData(
           useMaterial3: true,
-          fontFamily: 'Open Sans',
+          fontFamily: 'SF Pro',
           colorScheme: ColorScheme.fromSeed(seedColor: kPrimaryColor)
               .copyWith(background: kWhiteColor)),
       initialRoute: Routes.home, //? Set the initial route

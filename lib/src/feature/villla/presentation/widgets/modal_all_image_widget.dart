@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:villa_idealis/size_config.dart';
 import 'package:villa_idealis/src/core/constant/color_constant.dart';
+import 'package:villa_idealis/src/core/utils/button_util.dart';
 import 'package:villa_idealis/src/core/utils/text_util.dart';
 import 'package:villa_idealis/src/core/utils/widget_util.dart';
 
@@ -70,22 +71,21 @@ class _ModalAllImageWidgetState extends State<ModalAllImageWidget> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    bottom: getProportionateScreenWidth(context, 10),
+                    bottom: getProportionateScreenWidth(context, 4),
                     top: getProportionateScreenWidth(context, 4)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     buildTextCustom(context, "Semua gambar",
-                        weight: 'w700', fontSize: 16),
-                    GestureDetector(
-                      onTap: () {
+                        weight: 'w700', fontSize: 18),
+                    SizedBox(
+                      width: getProportionateScreenWidth(context, 30),
+                      child: buildIconButton(context, Icons.close_rounded,
+                          color: kErrorColor,
+                          size: getProportionateScreenWidth(context, 10),
+                          onPressed: () {
                         Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.close_rounded,
-                        color: kErrorColor,
-                        size: getProportionateScreenWidth(context, 20),
-                      ),
+                      }),
                     )
                   ],
                 ),
