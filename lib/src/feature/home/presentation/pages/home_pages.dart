@@ -89,14 +89,14 @@ class _HomePagesState extends State<HomePages> {
           icon: const Icon(Icons.home),
           onPressed: () => Navigator.pushNamed(context, Routes.onboarding),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle_rounded),
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.example);
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.account_circle_rounded),
+        //     onPressed: () {
+        //       Navigator.pushNamed(context, Routes.example);
+        //     },
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         padding:
@@ -123,9 +123,11 @@ class _HomePagesState extends State<HomePages> {
                   // You can now use the list of villas to display them in your UI
                   List<Widget> villaWidgets = villasResponse.data.map((villa) {
                     return VillaCard(
-                      thumbnailUrl: '${AppConstants.apiUrl}/${villa.thumbnail}',
-                      title: villa.code!, // Adjust as needed
+                      id: villa.id!.toString(),
+                      thumbnailUrl: villa.thumbnail!,
+                      title: villa.subCategory!.title!, // Adjust as needed
                       description: villa.description!,
+                      code: villa.code!,
                       isImageOnline: true,
                       facilities: villa.facilities
                           .map((facility) => ListFacilities(
@@ -200,10 +202,11 @@ class _HomePagesState extends State<HomePages> {
                               return Builder(
                                 builder: (BuildContext context) {
                                   return VillaCard(
-                                    thumbnailUrl:
-                                        '${AppConstants.apiUrl}/${villa.thumbnail}',
-                                    title: villa.code!,
+                                    id: villa.id!.toString(),
+                                    thumbnailUrl: villa.thumbnail!,
+                                    title: villaBlock.block!,
                                     description: villa.description!,
+                                    code: villa.code!,
                                     isImageOnline: true,
                                     facilities: villa.facilities
                                         .map((facility) => ListFacilities(

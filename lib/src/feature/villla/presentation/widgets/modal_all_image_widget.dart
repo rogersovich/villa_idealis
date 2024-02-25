@@ -7,10 +7,14 @@ import 'package:villa_idealis/src/core/utils/button_util.dart';
 import 'package:villa_idealis/src/core/utils/text_util.dart';
 import 'package:villa_idealis/src/core/utils/widget_util.dart';
 
-import '../../data/datasources/villa_images_data.dart';
+import '../../../../core/constant/app_constant.dart';
+import '../../../../core/models/villa_models.dart';
 
 class ModalAllImageWidget extends StatefulWidget {
-  const ModalAllImageWidget({Key? key}) : super(key: key);
+  final List<Gallery> galleries;
+
+  const ModalAllImageWidget({Key? key, required this.galleries})
+      : super(key: key);
 
   @override
   _ModalAllImageWidgetState createState() => _ModalAllImageWidgetState();
@@ -90,7 +94,9 @@ class _ModalAllImageWidgetState extends State<ModalAllImageWidget> {
                   ],
                 ),
               ),
-              const ImageColumnWidget(),
+              ImageColumnWidget(
+                galleries: widget.galleries,
+              ),
             ],
           ),
         ),
@@ -107,23 +113,47 @@ class _ModalAllImageWidgetState extends State<ModalAllImageWidget> {
 }
 
 class ImageColumnWidget extends StatelessWidget {
-  const ImageColumnWidget({super.key, Key? imagekey});
+  final List<Gallery> galleries;
+  const ImageColumnWidget({super.key, Key? imagekey, required this.galleries});
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: List.generate(VillaImageData.imgList.length, (index) {
-        final imageUrl = VillaImageData.imgList[index];
+      children: List.generate(galleries.length, (index) {
+        final imageUrl = '${AppConstants.apiUrl}/${galleries[index].image}';
         return Column(
           children: [
-            Image.asset(
+            Image.network(
               imageUrl,
-              fit: BoxFit.contain,
               width: double.infinity,
-              semanticLabel:
-                  "Villa ${index + 1}", // Use index to create a unique semantic label
+              fit: BoxFit.contain,
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace? stackTrace) {
+                return Image.asset(
+                  'assets/images/default.png',
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                );
+              },
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return Container(
+                  color: Colors.grey.withOpacity(0.2),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  ),
+                );
+              },
             ),
-            // Add additional widgets or spacing between images if needed
             buildSpacing(context, size: 6)
           ],
         );

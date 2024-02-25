@@ -15,7 +15,8 @@ class Routes {
       case home:
         return MaterialPageRoute(builder: (_) => const HomePages());
       case detailVilla:
-        return MaterialPageRoute(builder: (_) => const VillaPages());
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(builder: (_) => VillaPages(id: args['id']));
       case onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingPages());
       case example:

@@ -1,12 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:villa_idealis/size_config.dart';
+import '../../../../core/constant/app_constant.dart';
 import '../../../../core/constant/color_constant.dart';
-import '../../data/datasources/villa_images_data.dart';
+import '../../../../core/models/villa_models.dart';
+import '../../../../core/utils/image_util.dart';
 import 'modal_all_image_widget.dart';
 
 class VillaImageCarouselWidget extends StatefulWidget {
-  const VillaImageCarouselWidget({super.key});
+  final List<Gallery> galleries;
+
+  const VillaImageCarouselWidget({super.key, required this.galleries});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -20,14 +24,13 @@ class _VillaImageCarouselWidgetState extends State<VillaImageCarouselWidget> {
 
   @override
   Widget build(BuildContext context) {
-    const List<String> imgList = VillaImageData.imgList;
     final marginHozCarousel = getProportionateScreenWidth(context, 10);
     final BorderRadius roundedImage =
         BorderRadius.circular(getProportionateScreenWidth(context, 10));
     final double dotWidth = getProportionateScreenWidth(context, 7);
     final double dotHeight = getProportionateScreenWidth(context, 7);
 
-    final List<Widget> imageSliders = imgList
+    final List<Widget> imageSliders = widget.galleries
         .map((item) => Container(
               margin: EdgeInsets.only(
                   bottom: 5, left: marginHozCarousel, right: marginHozCarousel),
@@ -35,8 +38,8 @@ class _VillaImageCarouselWidgetState extends State<VillaImageCarouselWidget> {
                 borderRadius: roundedImage,
                 child: Stack(
                   children: <Widget>[
-                    Image.asset(item,
-                        fit: BoxFit.cover, width: double.maxFinite),
+                    buildImage(context, '${AppConstants.apiUrl}/${item.image}',
+                        width: double.maxFinite, height: double.infinity),
                   ],
                 ),
               ),
@@ -45,7 +48,7 @@ class _VillaImageCarouselWidgetState extends State<VillaImageCarouselWidget> {
 
     return GestureDetector(
       onTap: () {
-        _showModalBottomSheet(context);
+        _showModalBottomSheet(context, widget.galleries);
       },
       child: Stack(
         alignment: Alignment.bottomCenter,
@@ -70,7 +73,7 @@ class _VillaImageCarouselWidgetState extends State<VillaImageCarouselWidget> {
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: imgList.asMap().entries.map((entry) {
+              children: widget.galleries.asMap().entries.map((entry) {
                 return GestureDetector(
                   onTap: () => _controller.animateToPage(entry.key),
                   child: AnimatedSize(
@@ -104,12 +107,14 @@ class _VillaImageCarouselWidgetState extends State<VillaImageCarouselWidget> {
     );
   }
 
-  void _showModalBottomSheet(BuildContext context) {
+  void _showModalBottomSheet(BuildContext context, List<Gallery> galleries) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return const ModalAllImageWidget();
+        return ModalAllImageWidget(
+          galleries: galleries,
+        );
       },
     );
   }

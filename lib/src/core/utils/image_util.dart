@@ -46,13 +46,30 @@ Widget buildImage(BuildContext context, String url,
                   fit: fit,
                 );
               },
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return Container(
+                  color: Colors.grey.withOpacity(0.2),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  ),
+                );
+              },
             )
           : Image.asset(
               "assets/images/$url",
               width: widthImg,
               height: heightImg,
               fit: fit,
-              semanticLabel: "Foto Kucing",
+              semanticLabel: "Semantic Label",
             ),
     ),
   );

@@ -6,19 +6,25 @@ import 'package:villa_idealis/src/core/constant/color_constant.dart';
 import 'package:villa_idealis/src/core/utils/button_util.dart';
 
 import '../../../../../routes.dart';
+import '../../../../core/constant/app_constant.dart';
+import '../../../../core/utils/image_util.dart';
 import '../../data/models/facility_models.dart';
 
 class VillaCard extends StatelessWidget {
+  final String id;
   final String thumbnailUrl;
   final String title;
+  final String code;
   final String description;
   final List<ListFacilities> facilities;
   final bool isImageOnline;
 
   const VillaCard(
       {Key? key,
+      required this.id,
       required this.thumbnailUrl,
       required this.title,
+      required this.code,
       required this.description,
       required this.facilities,
       this.isImageOnline = false})
@@ -32,7 +38,7 @@ class VillaCard extends StatelessWidget {
       topLeft: Radius.circular(getProportionateScreenWidth(context, 10)),
       topRight: Radius.circular(getProportionateScreenWidth(context, 10)),
     );
-    final double thumbnailHeight = getProportionateScreenWidth(context, 160);
+    final double thumbnailHeight = getProportionateScreenWidth(context, 80);
     final EdgeInsets paddingCard = EdgeInsets.symmetric(
         vertical: getProportionateScreenWidth(context, 8),
         horizontal: getProportionateScreenWidth(context, 12));
@@ -57,19 +63,8 @@ class VillaCard extends StatelessWidget {
           //* Rounded Image with ClipRRect
           ClipRRect(
             borderRadius: borderRadiusImg,
-            child: isImageOnline
-                ? Image.network(
-                    thumbnailUrl,
-                    width: double.infinity,
-                    height: thumbnailHeight,
-                    fit: BoxFit.cover,
-                  )
-                : Image.asset(
-                    thumbnailUrl,
-                    width: double.infinity,
-                    height: thumbnailHeight,
-                    fit: BoxFit.cover,
-                  ),
+            child: buildImage(context, '${AppConstants.apiUrl}/$thumbnailUrl',
+                width: double.infinity, height: thumbnailHeight),
           ),
           Padding(
             padding: paddingCard,
@@ -139,7 +134,7 @@ class VillaCard extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: 'CBM-DA001',
+                        text: code,
                         style: TextStyle(
                             color: kBlackColor,
                             fontWeight: FontWeight.bold,
@@ -148,8 +143,10 @@ class VillaCard extends StatelessWidget {
                       ),
                     ])),
                     buildElevatedButton(context, 'Detail',
-                        onPressed: () =>
-                            {Navigator.pushNamed(context, Routes.detailVilla)},
+                        onPressed: () => {
+                              Navigator.pushNamed(context, Routes.detailVilla,
+                                  arguments: {'id': id})
+                            },
                         width: 90,
                         height: 30,
                         icon: Icons.arrow_forward_rounded,

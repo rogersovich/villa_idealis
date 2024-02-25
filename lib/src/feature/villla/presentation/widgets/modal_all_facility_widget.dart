@@ -1,15 +1,18 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:villa_idealis/src/core/models/villa_models.dart';
 
 import '../../../../../size_config.dart';
 import '../../../../core/constant/color_constant.dart';
+import '../../../../core/constant/style_constant.dart';
 import '../../../../core/utils/text_util.dart';
 import '../../../../core/utils/widget_util.dart';
-import '../../../home/data/models/facility_models.dart';
 
 class DraggableBottomSheet extends StatefulWidget {
-  const DraggableBottomSheet({super.key});
+  final List<Facility> facilities;
+
+  const DraggableBottomSheet({super.key, required this.facilities});
 
   @override
   _DraggableBottomSheetState createState() => _DraggableBottomSheetState();
@@ -29,20 +32,6 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
   Widget build(BuildContext context) {
     final double fontSizeTextIcon = getProportionateScreenWidth(context, 12);
     final double fontSizeIcon = getProportionateScreenWidth(context, 22);
-    final List<ListFacilities> listFacility = [
-      ListFacilities(icon: Icons.people_outline, title: '7 Orang'),
-      ListFacilities(icon: Icons.pool_outlined, title: 'Kolam Renang'),
-      ListFacilities(icon: Icons.bed_outlined, title: '4 Kamar'),
-      ListFacilities(icon: Icons.wifi, title: 'Wifi'),
-      ListFacilities(icon: Icons.people_outline, title: '7 Orang'),
-      ListFacilities(icon: Icons.pool_outlined, title: 'Kolam Renang'),
-      ListFacilities(icon: Icons.bed_outlined, title: '4 Kamar'),
-      ListFacilities(icon: Icons.wifi, title: 'Wifi'),
-      ListFacilities(icon: Icons.people_outline, title: '7 Orang'),
-      ListFacilities(icon: Icons.pool_outlined, title: 'Kolam Renang'),
-      ListFacilities(icon: Icons.bed_outlined, title: '4 Kamar'),
-      ListFacilities(icon: Icons.wifi, title: 'Wifi'),
-    ];
 
     return DraggableScrollableSheet(
       expand: false,
@@ -99,7 +88,7 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
                               crossAxisSpacing: 8.0, // Spacing horizontally
                               mainAxisSpacing: 8.0, // Spacing vertically
                               childAspectRatio: 5),
-                      itemCount: listFacility.length,
+                      itemCount: widget.facilities.length,
                       itemBuilder: (context, index) {
                         return Container(
                           padding: EdgeInsets.symmetric(
@@ -109,18 +98,19 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(listFacility[index].icon,
+                              Icon(getIconData(widget.facilities[index].icon!),
                                   size: fontSizeIcon, color: kPrimaryColor),
                               SizedBox(
                                   width:
                                       getProportionateScreenWidth(context, 18)),
                               Text(
-                                listFacility[index].title,
+                                "${widget.facilities[index].value != null && widget.facilities[index].value != '0' ? '${widget.facilities[index].value} ' : ''}${widget.facilities[index].title}",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: fontSizeTextIcon,
-                                    color: Colors.black54),
-                              ),
+                                  fontSize: fontSizeTextIcon,
+                                  color: Colors.black54,
+                                ),
+                              )
                             ],
                           ),
                         );
