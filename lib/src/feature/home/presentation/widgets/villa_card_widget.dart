@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:villa_idealis/size_config.dart';
 import 'package:villa_idealis/src/core/constant/color_constant.dart';
 import 'package:villa_idealis/src/core/utils/button_util.dart';
@@ -11,14 +13,16 @@ class VillaCard extends StatelessWidget {
   final String title;
   final String description;
   final List<ListFacilities> facilities;
+  final bool isImageOnline;
 
-  const VillaCard({
-    super.key,
-    required this.thumbnailUrl,
-    required this.title,
-    required this.description,
-    required this.facilities,
-  });
+  const VillaCard(
+      {Key? key,
+      required this.thumbnailUrl,
+      required this.title,
+      required this.description,
+      required this.facilities,
+      this.isImageOnline = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +57,19 @@ class VillaCard extends StatelessWidget {
           //* Rounded Image with ClipRRect
           ClipRRect(
             borderRadius: borderRadiusImg,
-            child: Image.asset(
-              thumbnailUrl,
-              width: double.infinity,
-              height: thumbnailHeight,
-              fit: BoxFit.cover,
-            ),
+            child: isImageOnline
+                ? Image.network(
+                    thumbnailUrl,
+                    width: double.infinity,
+                    height: thumbnailHeight,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    thumbnailUrl,
+                    width: double.infinity,
+                    height: thumbnailHeight,
+                    fit: BoxFit.cover,
+                  ),
           ),
           Padding(
             padding: paddingCard,

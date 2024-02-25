@@ -115,3 +115,21 @@ ButtonStyle outlinedButtonStyle(
     ),
   );
 }
+
+IconData getIconData(String iconName) {
+  switch (iconName) {
+    case 'people_outline':
+      return Icons.people_outline;
+    case 'bed_outlined':
+      return Icons.bed_outlined;
+    case 'pool_outlined':
+      return Icons.pool_outlined;
+    case 'wifi':
+      return Icons.wifi;
+    case 'time_to_leave':
+      return Icons.time_to_leave;
+    default:
+      return Icons.error; // Default icon
+  }
+}
+
