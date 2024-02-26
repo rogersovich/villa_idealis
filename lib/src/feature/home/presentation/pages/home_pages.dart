@@ -12,8 +12,8 @@ import 'package:villa_idealis/src/feature/home/data/models/facility_models.dart'
 import '../../../../../routes.dart';
 import '../../../../core/constant/color_constant.dart';
 import '../../../../core/utils/text_util.dart';
-// import '../../data/datasources/villa_items_data.dart';
 import '../widgets/image_slider_widget.dart';
+import '../widgets/shimmer_cards_widget.dart';
 import '../widgets/villa_card_widget.dart';
 
 class HomePages extends StatefulWidget {
@@ -73,6 +73,16 @@ class _HomePagesState extends State<HomePages> {
     }
   }
 
+  Future<void> _handleRefresh() async {
+    setState(() {
+      //todo Reassign the futures to trigger fetching data again
+      _villaRecommendationsFuture = fetchVillaRecommendations();
+      _villaBloksFuture = fetchVillaBloks();
+    });
+    //? You may want to wait for both futures to complete before completing the refresh
+    await Future.wait([_villaRecommendationsFuture, _villaBloksFuture]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final EdgeInsets paddingCard = EdgeInsets.symmetric(
@@ -98,137 +108,146 @@ class _HomePagesState extends State<HomePages> {
         //   ),
         // ],
       ),
-      body: SingleChildScrollView(
-        padding:
-            EdgeInsets.only(bottom: getProportionateScreenWidth(context, 8)),
-        child: Column(
-          children: [
-            const ImageSliderWidget(),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: getProportionateScreenWidth(context, 8)),
-              child: buildTextCustom(context, "Rekomendasi Villa Terbaik",
-                  weight: 'w700', fontSize: 18),
-            ),
-            FutureBuilder<VillaRecommendationsReponse>(
-              future: _villaRecommendationsFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (snapshot.hasData) {
-                  VillaRecommendationsReponse villasResponse = snapshot.data!;
+      body: RefreshIndicator(
+        onRefresh: _handleRefresh,
+        child: SingleChildScrollView(
+          padding:
+              EdgeInsets.only(bottom: getProportionateScreenWidth(context, 8)),
+          child: Column(
+            children: [
+              const ImageSliderWidget(),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: getProportionateScreenWidth(context, 8)),
+                child: buildTextCustom(context, "Rekomendasi Villa Terbaik",
+                    weight: 'w700', fontSize: 18),
+              ),
+              FutureBuilder<VillaRecommendationsReponse>(
+                future: _villaRecommendationsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return buildShimmerCardsEffect(3);
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (snapshot.hasData) {
+                    VillaRecommendationsReponse villasResponse = snapshot.data!;
 
-                  // You can now use the list of villas to display them in your UI
-                  List<Widget> villaWidgets = villasResponse.data.map((villa) {
-                    return VillaCard(
-                      id: villa.id!.toString(),
-                      thumbnailUrl: villa.thumbnail!,
-                      title: villa.subCategory!.title!, // Adjust as needed
-                      description: villa.description!,
-                      code: villa.code!,
-                      isImageOnline: true,
-                      facilities: villa.facilities
-                          .map((facility) => ListFacilities(
-                              icon: getIconData(facility.icon!),
-                              title: facility.title!))
-                          .toList(),
-                    );
-                  }).toList();
+                    List<Widget> villaWidgets =
+                        villasResponse.data.map((villa) {
+                      return VillaCard(
+                        id: villa.id!.toString(),
+                        thumbnailUrl: villa.thumbnail!,
+                        title: villa.subCategory!.title!,
+                        description: villa.description!,
+                        code: villa.code!,
+                        isImageOnline: true,
+                        facilities: villa.facilities
+                            .map((facility) => ListFacilities(
+                                icon: getIconData(facility.icon!),
+                                title: facility.title!))
+                            .toList(),
+                      );
+                    }).toList();
 
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: villaWidgets,
-                    ),
-                  );
-                } else {
-                  // Handle the case where there is data but it's empty
-                  return const Center(child: Text('No data available'));
-                }
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: getProportionateScreenWidth(context, 10)),
-              child: buildOutlinedButton(context, "Lihat lebih banyak",
-                  onPressed: () => {}, width: double.infinity, height: 34),
-            ),
-            FutureBuilder<VillaBloksReponse>(
-              future: _villaBloksFuture, // Use the future here
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator(); // Loading state
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}'); // Error state
-                } else if (snapshot.hasData) {
-                  VillaBloksReponse villasResponse = snapshot.data!;
-                  // in above column please mapping with "villasResponse.data"
-                  return ListView.builder(
-                    itemCount: villasResponse.data.length,
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      var villaBlock = villasResponse.data[index];
-                      return Column(
+                    return SingleChildScrollView(
+                      child: Column(
                         children: [
+                          ...villaWidgets,
                           Padding(
-                            padding: paddingCard,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                buildTextCustom(
-                                    context, 'Blok ${villaBlock.block}',
-                                    weight: 'w700', fontSize: 16),
-                                buildTextButton(context, 'Lebih banyak',
-                                    onPressed: () => {},
-                                    width: 120,
-                                    icon: Icons.arrow_forward_rounded,
-                                    iconPosition: 'right')
-                              ],
-                            ),
-                          ),
-                          CarouselSlider(
-                            options: CarouselOptions(
-                              autoPlay: false,
-                              enlargeCenterPage: false,
-                              enableInfiniteScroll: false,
-                              viewportFraction: 0.9,
-                              aspectRatio: 1.2,
-                              padEnds: false,
-                            ),
-                            items: villaBlock.villas.map<Widget>((villa) {
-                              return Builder(
-                                builder: (BuildContext context) {
-                                  return VillaCard(
-                                    id: villa.id!.toString(),
-                                    thumbnailUrl: villa.thumbnail!,
-                                    title: villaBlock.block!,
-                                    description: villa.description!,
-                                    code: villa.code!,
-                                    isImageOnline: true,
-                                    facilities: villa.facilities
-                                        .map((facility) => ListFacilities(
-                                            icon: getIconData(facility.icon!),
-                                            title: facility.title!))
-                                        .toList(),
-                                  );
-                                },
-                              );
-                            }).toList(),
+                            padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    getProportionateScreenWidth(context, 10)),
+                            child: buildOutlinedButton(
+                                context, "Lihat lebih banyak",
+                                onPressed: () => {},
+                                width: double.infinity,
+                                height: 34),
                           ),
                         ],
-                      );
-                    },
-                  );
-                } else {
-                  return const Text(
-                      'Unknown error'); // Fallback for unknown states
-                }
-              },
-            )
-          ],
+                      ),
+                    );
+                  } else {
+                    // Handle the case where there is data but it's empty
+                    return const Center(child: Text('No data available'));
+                  }
+                },
+              ),
+              FutureBuilder<VillaBloksReponse>(
+                future: _villaBloksFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return buildShimmerCardsEffect(1);
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.hasData) {
+                    VillaBloksReponse villasResponse = snapshot.data!;
+
+                    return ListView.builder(
+                      itemCount: villasResponse.data.length,
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        var villaBlock = villasResponse.data[index];
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: paddingCard,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  buildTextCustom(
+                                      context, 'Blok ${villaBlock.block}',
+                                      weight: 'w700', fontSize: 16),
+                                  buildTextButton(context, 'Lebih banyak',
+                                      onPressed: () => {},
+                                      width: 120,
+                                      icon: Icons.arrow_forward_rounded,
+                                      iconPosition: 'right')
+                                ],
+                              ),
+                            ),
+                            CarouselSlider(
+                              options: CarouselOptions(
+                                autoPlay: false,
+                                enlargeCenterPage: false,
+                                enableInfiniteScroll: false,
+                                viewportFraction: 0.9,
+                                aspectRatio: 1.2,
+                                padEnds: false,
+                              ),
+                              items: villaBlock.villas.map<Widget>((villa) {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return VillaCard(
+                                      id: villa.id!.toString(),
+                                      thumbnailUrl: villa.thumbnail!,
+                                      title: villaBlock.block!,
+                                      description: villa.description!,
+                                      code: villa.code!,
+                                      isImageOnline: true,
+                                      facilities: villa.facilities
+                                          .map((facility) => ListFacilities(
+                                              icon: getIconData(facility.icon!),
+                                              title: facility.title!))
+                                          .toList(),
+                                    );
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    return const Text('Unknown error');
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
