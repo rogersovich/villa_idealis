@@ -142,6 +142,7 @@ class ImageColumnWidget extends StatelessWidget {
                   return child;
                 }
                 return Container(
+                  height: 200,
                   color: Colors.grey.withOpacity(0.2),
                   child: Center(
                     child: CircularProgressIndicator(

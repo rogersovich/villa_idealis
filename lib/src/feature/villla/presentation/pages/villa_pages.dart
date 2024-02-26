@@ -9,8 +9,8 @@ import 'package:villa_idealis/src/core/models/villa_models.dart';
 import 'package:villa_idealis/src/core/utils/button_util.dart';
 import 'package:villa_idealis/src/core/utils/text_util.dart';
 
-import '../../../../core/constant/app_constant.dart';
 import '../../../../core/constant/style_constant.dart';
+import '../../services/villa_service.dart';
 import '../widgets/modal_all_facility_widget.dart';
 import '../widgets/shimmer_detail_villa_widget.dart';
 import '../widgets/villa_image_carousel_widget.dart';
@@ -31,32 +31,15 @@ class _VillaPagesState extends State<VillaPages> {
   @override
   void initState() {
     super.initState();
-    _villaFuture = fetchVilla();
-  }
-
-  Future<VillaResponse> fetchVilla() async {
-    try {
-      final response =
-          await dio.get('${AppConstants.apiUrl}/villas/${widget.id}');
-
-      if (response.statusCode == 200) {
-        // Parse the JSON response using the VillaResponse model
-        return VillaResponse.fromJson(response.data);
-      } else {
-        // If the API returns an error status code, throw an exception
-        throw Exception(
-            'Failed to fetch data. Status code: ${response.statusCode}');
-      }
-    } catch (error) {
-      // Handle errors, including DioError for network-related issues
-      throw Exception('Error: $error');
-    }
+    VillaService villaService = VillaService();
+    _villaFuture = villaService.fetchVilla(widget.id);
   }
 
   Future<void> _handleRefresh() async {
+    VillaService villaService = VillaService();
     setState(() {
       //todo Reassign the futures to trigger fetching data again
-      _villaFuture = fetchVilla();
+      _villaFuture = villaService.fetchVilla(widget.id);
     });
     //? You may want to wait for both futures to complete before completing the refresh
     await Future.wait([_villaFuture]);
@@ -69,10 +52,11 @@ class _VillaPagesState extends State<VillaPages> {
 
     Future<void> launchInBrowser(String phoneNumber) async {
       const message = 'Halo, Saya Customer Idealis!\n'
-          'ingin membooking villa untuk tanggal 17 Desember apakah masih ada ?';
+          'ingin membooking villa apakah masih ada ?';
 
       final whatsappUrl = Uri.parse(
           'https://wa.me/$phoneNumber/?text=${Uri.encodeComponent(message)}');
+
       if (!await launchUrl(
         whatsappUrl,
         mode: LaunchMode.platformDefault,
